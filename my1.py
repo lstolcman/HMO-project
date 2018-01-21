@@ -121,10 +121,12 @@ if __name__ == '__main__':
 
     #init students list and zero dictionary
     global_students_dict = dict()
+    global_students = set(students.copy().keys())
     for s in range(1, len(students)+1):
         global_students_dict[s] = None
 
     while len(global_stops) != 0: ## empty
+        print('while len(global_stops) != 0: ## empty')
         local_stops = global_stops.copy()
         next_stop = random.choice(local_stops)
         current_stop = 0 # base stop, always 0, by definition of file format
@@ -134,39 +136,69 @@ if __name__ == '__main__':
         capacity = router.get_capacity() 
         local_path_list = set()
         while True:
+            print('if next_stop == None:')
             if next_stop == None:
+                print('break')
                 break
 
-            # generate list of students connected with one or many stops
-            student_has_single = set()
-            student_has_many = set()
+            # get our stop and generate list of students connected with only our stop or many stops
+            student_single = set()
+            student_many = set()
+            print('for student in stop_near_students[next_stop]:')
             for student in stop_near_students[next_stop]:
                 temp = [x for x in student_near_stops[student] if x in global_stops]
-                print('gen list dinglem nay')
-                print(temp, student)
                 if len(temp) == 1:
-                    student_has_single.add(student)
+                    student_single.add(student)
                 elif len(temp) > 1:
-                    student_has_many.add(student)
+                    student_many.add(student)
                 else:
                     raise Exception('Student has no stops!')
-            print()
-            print('student_has_many')
-            print(student_has_many)
-            print('student_has_single')
-            print(student_has_single)
 
-            if capacity < 4:#studenci z tym samym stopem
+            if capacity < len(student_single):#studenci z tym samym stopem
+                print('if capacity < ')
+                print('local_stops')
+                print(local_stops)
+                print('next_stop')
+                print(next_stop)
                 local_stops.remove(next_stop)
-                next_stop = None#closest stop from available
+                print('cap<len')
+                for s in stop_near_stops[next_stop]:
+                    if s[0] in local_stops:
+                        next_stop = s[0]
             else:
+                print('else if capacity <:')
                 current_stop = next_stop
-                # wez pojedynczych
-                print('wez pojedynczych')
-                print(current_stop)
-                studenci = stop_near_students[current_stop]
-                print('studenci')
-                print(studenci)
+
+                print()
+                print('for s in student_single:')
+                for s in student_single:
+                    # wez pojedynczych i przypisz do przystanku
+                    global_students_dict[s] = current_stop
+                    print(global_students_dict)
+                    # usun pojedynczych z listy dostepnych
+                    print()
+                    print('global_students przed')
+                    print(global_students)
+                    global_students.remove(s)
+                    print('global_students po')
+                    print(global_students)
+                    print()
+
+                print()
+                print('for s in student_many:')
+                for s in student_many:
+                    # wez wielokrotnych i przypisz do przystanku
+                    if capacity > 0:
+                        global_students_dict[s] = current_stop
+                        print(global_students_dict)
+                        # usun pojedynczych z listy dostepnych
+                        print()
+                        print('global_students przed')
+                        print(global_students)
+                        global_students.remove(s)
+                        print('global_students po')
+                        print(global_students)
+                        print()
                 break
                 #wez pojedyncze
                 #usun z kazdego pojedynczego
