@@ -7,7 +7,7 @@ import router
 
 
 if __name__ == '__main__':
-    fn = 'instances/my1.txt'
+    fn = 'instances/sbr3.txt'
 
     router = router.Router(fn)
 
@@ -21,28 +21,10 @@ if __name__ == '__main__':
     stop_near_stops = router.get_stop_near_stops()
     stop_near_students = router.get_stop_near_students()
 
-    #clear all
-    plt.cla()
-    plt.clf()
-    plt.title('{0}\nstops: {1}, students: {2}, maxwalk: {3}, capacity: {4}'.format(fn, len(stops), len(students), maxwalk, capacity))
-    #black axis lines
-    plt.axhline(0, color='k', lw=0.5)
-    plt.axvline(0, color='k', lw=0.5)
-    plt.grid(True)
-    plt.xticks(np.arange(-13, 14, 1))
-    plt.yticks(np.arange(-7, 14, 1))
-    plt.axis([-13, 14, -7, 14])
-    #plt.minorticks_on()
 
 
-    #plot students and stops
-    plt.scatter(stops[0][0], stops[0][1], marker='o', s=150, color='xkcd:orange', edgecolor='xkcd:dark grey')
-    for k, v in list(stops.items())[1:]:
-        plt.scatter(v[0], v[1], marker='.', s=150, color='xkcd:pink', edgecolor='xkcd:dark grey')
-        plt.text(v[0]+0.1, v[1]+0.1, str(k), fontdict=dict(color='xkcd:purple'))
-    for k, v in students.items():
-        plt.scatter(v[0], v[1], marker='.', s=150, color='xkcd:sky blue', edgecolor='xkcd:dark grey')
-        plt.text(v[0]+0.1, v[1]+0.1, str(k), fontdict=dict(color='xkcd:blue'))
+
+
 
     ## find route algorithm
     global_stops = list(stops.copy().keys())[1:]# [1:] - remove base stop 0 which is unnecessary
@@ -55,11 +37,11 @@ if __name__ == '__main__':
     for s in range(1, len(students)+1):
         global_students_dict[s] = None
 
-    #stops_debug = [7, 7, 6, 1, 3] # only first stops, in reverse order
+    stops_debug = [61,37,36] # only first stops, in reverse order
     while len(global_students) != 0: ## empty, also some stops can be unassigned. but students must be picked up so thats why this condition
         local_stops = global_stops.copy()
-        next_stop = random.choice(local_stops) # if there's fault with routing, replace this with debug stops list
-        #next_stop = stops_debug.pop()
+        #next_stop = random.choice(local_stops) # if there's fault with routing, replace this with debug stops list
+        next_stop = stops_debug.pop()
         current_stop = 0 # base stop, always 0, by definition of file format
         capacity = router.get_capacity() 
         local_path_list = list()
@@ -98,13 +80,14 @@ if __name__ == '__main__':
                     global_students.remove(s)
                     capacity -= 1
 
-                if capacity > 0:
-                    for s in student_many:
+                for s in student_many:
+                    if capacity > 0:
                         # wez wielokrotnych i przypisz do przystanku
                         global_students_dict[s] = current_stop
                         # usun pojedynczych z listy dostepnych
                         global_students.remove(s)
                         capacity -= 1
+
                 local_stops.remove(current_stop)
                 global_stops.remove(current_stop)
                 local_path_list.extend([current_stop])
@@ -128,6 +111,35 @@ if __name__ == '__main__':
         f.write('\n')
         for k, v in global_students_dict.items():
             f.write('{0} {1}\n'.format(k, v))
+
+
+
+
+
+    '''
+
+    #clear all
+    plt.cla()
+    plt.clf()
+    plt.title('{0}\nstops: {1}, students: {2}, maxwalk: {3}, capacity: {4}'.format(fn, len(stops), len(students), maxwalk, capacity))
+    #black axis lines
+    plt.axhline(0, color='k', lw=0.5)
+    plt.axvline(0, color='k', lw=0.5)
+    plt.grid(True)
+    plt.xticks(np.arange(-13, 14, 1))
+    plt.yticks(np.arange(-7, 14, 1))
+    plt.axis([-13, 14, -7, 14])
+    #plt.minorticks_on()
+
+
+    #plot students and stops
+    plt.scatter(stops[0][0], stops[0][1], marker='o', s=150, color='xkcd:orange', edgecolor='xkcd:dark grey')
+    for k, v in list(stops.items())[1:]:
+        plt.scatter(v[0], v[1], marker='.', s=150, color='xkcd:pink', edgecolor='xkcd:dark grey')
+        plt.text(v[0]+0.1, v[1]+0.1, str(k), fontdict=dict(color='xkcd:purple'))
+    for k, v in students.items():
+        plt.scatter(v[0], v[1], marker='.', s=150, color='xkcd:sky blue', edgecolor='xkcd:dark grey')
+        plt.text(v[0]+0.1, v[1]+0.1, str(k), fontdict=dict(color='xkcd:blue'))
 
     for path in global_path_list:
         for i in range(len(path)+1):
@@ -153,5 +165,5 @@ if __name__ == '__main__':
     #plt.savefig(str(random.randint(1,100))+'.jpg')
     plt.show()
 
-
+    '''
 
