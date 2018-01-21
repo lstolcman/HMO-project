@@ -37,8 +37,10 @@ if __name__ == '__main__':
     plt.scatter(stops[0][0], stops[0][1], marker='o', s=150, color='xkcd:orange', edgecolor='xkcd:dark grey')
     for k, v in list(stops.items())[1:]:
         plt.scatter(v[0], v[1], marker='.', s=150, color='xkcd:pink', edgecolor='xkcd:dark grey')
+        plt.text(v[0]+0.1, v[1]+0.1, str(k), fontdict=dict(color='xkcd:purple'))
     for k, v in students.items():
         plt.scatter(v[0], v[1], marker='.', s=150, color='xkcd:sky blue', edgecolor='xkcd:dark grey')
+        plt.text(v[0]+0.1, v[1]+0.1, str(k), fontdict=dict(color='xkcd:blue'))
 
     #plot students and stops assigned to them
     for k, v in student_near_stops.items():
@@ -54,6 +56,11 @@ if __name__ == '__main__':
                 plt.plot([v[0], vv[0]],[v[1], vv[1]],'k-', lw=0.5)
 
     #plt.plot([x1, x2],[y1, y2],'k-', lw=0.5)
+    '''
+
+
+
+
     '''
     min_stop_coords = stops[0]
     min_stop_dist = float('+Inf')
@@ -100,6 +107,11 @@ if __name__ == '__main__':
             del stops_not_visited[z[0]]
             capacity = capacity - len( stop_near_student_many) - len ( stop_near_student_single)
             last_stop = z[1]
+
+
+    '''
+
+
 
 
     '''
