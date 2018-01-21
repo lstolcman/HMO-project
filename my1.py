@@ -122,6 +122,13 @@ if __name__ == '__main__':
                     global_path_list.extend([local_path_list])
 
 
+    with open('result.txt', mode='wt', encoding='utf-8') as f:
+        for path in global_path_list:
+            f.write(' '.join(str(elem) for elem in path)+'\n')
+        f.write('\n')
+        for k, v in global_students_dict.items():
+            f.write('{0} {1}\n'.format(k, v))
+
     for path in global_path_list:
         for i in range(len(path)+1):
             if i == 0:
