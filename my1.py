@@ -55,9 +55,11 @@ if __name__ == '__main__':
     for s in range(1, len(students)+1):
         global_students_dict[s] = None
 
+    #stops_debug = [7, 7, 6, 1, 3] # only first stops, in reverse order
     while len(global_students) != 0: ## empty, also some stops can be unassigned. but students must be picked up so thats why this condition
         local_stops = global_stops.copy()
-        next_stop = random.choice(local_stops)
+        next_stop = random.choice(local_stops) # if there's fault with routing, replace this with debug stops list
+        #next_stop = stops_debug.pop()
         current_stop = 0 # base stop, always 0, by definition of file format
         capacity = router.get_capacity() 
         local_path_list = list()
@@ -79,6 +81,10 @@ if __name__ == '__main__':
                         raise Exception('Student has no stops!')
 
             if capacity < len(student_single):#studenci z tym samym stopem
+                if local_stops == []:
+                    global_path_list.extend([local_path_list])
+                    next_stop = None
+                    break
                 local_stops.remove(next_stop)
                 for s in stop_near_stops[next_stop]:
                     if s[0] in local_stops:
