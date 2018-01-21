@@ -16,6 +16,7 @@ class Router():
         self.process_file(routes_fn)
         self.generate_student_near_stops()
         self.generate_stop_near_stops()
+        self.generate_stop_near_students()
 
 
     def process_file(self, fn):
@@ -51,6 +52,9 @@ class Router():
     def generate_student_near_stops(self):
         '''Calculate distance between students and stops.
         Assign available stops to student
+        out = dict( <student_id> : set( <stop_id>, <stop_id>, <stop_id>, ...)
+                    <student_id> : set( <stop_id>, <stop_id>, <stop_id>, ...)
+                  )
         '''
         self.student_near_stops = dict()
         for k, v in self.students.items():
@@ -59,16 +63,39 @@ class Router():
                 if np.linalg.norm(v-vv) < self.maxwalk:
                     available_stops.add(kk)
             self.student_near_stops[k] = available_stops
+        print('self.student_near_stops', self.student_near_stops)
 
     def generate_stop_near_stops(self):
-        '''Calculate distance between stop and other stops'''
+        '''Calculate distance between stop and other stops
+        out = dict( <stop_id> : tuple( tuple(<stop_id>, <distance>), tuple(<stop_id>, <distance>), ...)
+                    <stop_id> : tuple( tuple(<stop_id>, <distance>), tuple(<stop_id>, <distance>), ...)
+                  )
+        '''
         self.stop_near_stops = dict()
         for k, v in list(self.stops.items())[1:]:
             stops_distances = []
             for kk, vv in list(self.stops.items())[1:]:
                 if v is not vv:
-                    stops_distances.extend([[kk, np.linalg.norm(v-vv)]])
-            self.stop_near_stops[k] = sorted(stops_distances, key=lambda x:x[1])
+                    stops_distances.extend([tuple([kk, np.linalg.norm(v-vv)])])
+            self.stop_near_stops[k] = tuple(sorted(stops_distances, key=lambda x:x[1]))
+        print('self.stop_near_stops', self.stop_near_stops)
+
+    def generate_stop_near_students(self):
+        '''Calculate distance between students and stops.
+        Assign available student to stops
+        out = dict( <stop_id> : set( <student_id>, <student_id>, <student_id>, ...)
+                    <stop_id> : set( <student_id>, <student_id>, <student_id>, ...)
+                  )
+        '''
+        self.stop_near_students = dict()
+        for k, v in list(self.stops.items())[1:]:
+            if k == 0: continue
+            available_students = set()
+            for kk, vv in self.students.items():
+                if np.linalg.norm(v-vv) < self.maxwalk:
+                    available_students.add(kk)
+            self.stop_near_students[k] = available_students
+        print('self.stop_near_students', self.stop_near_students)
 
     def get_stops(self):
         return self.stops
@@ -87,6 +114,9 @@ class Router():
 
     def get_stop_near_stops(self):
         return self.stop_near_stops
+
+    def get_stop_near_students(self):
+        return self.stop_near_students
 
 
 

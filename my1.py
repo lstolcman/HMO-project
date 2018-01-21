@@ -18,6 +18,8 @@ if __name__ == '__main__':
     capacity = router.get_capacity()
 
     student_near_stops = router.get_student_near_stops()
+    stop_near_stops = router.get_stop_near_stops()
+    stop_near_students = router.get_stop_near_students()
 
     #clear all
     plt.cla()
@@ -112,6 +114,55 @@ if __name__ == '__main__':
     '''
 
 
+    ## find route algorithm
+    global_stops = stops.copy()
+    base_stop = global_stops[0]
+    del global_stops[0] # remove base stop 0 which is unnecessary
+    global_path_list = []
+
+    global_students_dict = dict()
+    for s in range(1, len(students)+1):
+        global_students_dict[s] = None
+
+    while len(global_stops) != 0: ## empty
+        local_stops = global_stops.copy()
+        next_stop = random.choice(list(local_stops.items()))
+        last_stop = base_stop
+        print('last_stop', last_stop)
+        print('next_stop', next_stop)
+        print('local stops', local_stops)
+        capacity = router.get_capacity() 
+        local_path_list = []
+        while True:
+            if next_stop == None:
+                break
+            if capacity < 4:#studenci z tym samym stopem
+                del local_stops[next_stop]
+                next_stop = None#closest stop from available
+            else:
+                last_stop = next_stop
+                break
+                #wez pojedyncze
+                #usun z kazdego pojedynczego
+                #if capacity > 0:
+                #    wez z wielu jesli są
+                #        dla kazdego wzietego ktory mial wiele polaczen
+                #            usun polaczenie tego przystanku z innymi przystankami
+                #usun przyst z listy lokalnej stopow
+                #del local_stops[next_stop]
+                #usun przyst z listy globalnej stopow
+                #del global_stops[next_stop]
+                #lokalna_lista_sciezek += ??? //dodaj ten stop do lokalnejlisty sciezek ktore powstaly
+                #if cap>0  && len(local_stops) != 0:
+                    #nastepny_przystanek = najblizszy przystanek od biezacego (lista posortowana od najblizszych do najdalszych), lista zawiera tylko przystanki ktore sa w bazie lokalnych)!! wiec trzeba chyba przeszukiwac
+                #    nastepny_przystanek = for p in ost_przystanek_nearest: if p in lokalne_przystanki: nastepny przystanek=p, break
+                #    if dist(ostatni, nastepny) > dist(nastepny,baza)
+                #        next_stop = None
+                #        global_path_list.extend([[local_path_list]])
+                #else
+                #    next_stop = None
+                #    global_path_list.extend([[local_path_list]])
+        break
 
 
     '''
