@@ -63,7 +63,10 @@ class Router():
                 if np.linalg.norm(v-vv) < self.maxwalk:
                     available_stops.add(kk)
             self.student_near_stops[k] = available_stops
-        print('self.student_near_stops', self.student_near_stops)
+        print()
+        print('self.student_near_stops')
+        print(self.student_near_stops)
+        print()
 
     def generate_stop_near_stops(self):
         '''Calculate distance between stop and other stops
@@ -78,7 +81,10 @@ class Router():
                 if v is not vv:
                     stops_distances.extend([tuple([kk, np.linalg.norm(v-vv)])])
             self.stop_near_stops[k] = tuple(sorted(stops_distances, key=lambda x:x[1]))
-        print('self.stop_near_stops', self.stop_near_stops)
+        print()
+        print('self.stop_near_stops')
+        print(self.stop_near_stops)
+        print()
 
     def generate_stop_near_students(self):
         '''Calculate distance between students and stops.
@@ -95,7 +101,10 @@ class Router():
                 if np.linalg.norm(v-vv) < self.maxwalk:
                     available_students.add(kk)
             self.stop_near_students[k] = available_students
-        print('self.stop_near_students', self.stop_near_students)
+        print()
+        print('self.stop_near_students')
+        print(self.stop_near_students)
+        print()
 
     def get_stops(self):
         return self.stops

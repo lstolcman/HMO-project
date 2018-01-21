@@ -115,32 +115,58 @@ if __name__ == '__main__':
 
 
     ## find route algorithm
-    global_stops = stops.copy()
+    global_stops = list(stops.copy().keys())[1:]# [1:] - remove base stop 0 which is unnecessary
     base_stop = global_stops[0]
-    del global_stops[0] # remove base stop 0 which is unnecessary
     global_path_list = []
 
+    #init students list and zero dictionary
     global_students_dict = dict()
     for s in range(1, len(students)+1):
         global_students_dict[s] = None
 
     while len(global_stops) != 0: ## empty
         local_stops = global_stops.copy()
-        next_stop = random.choice(list(local_stops.items()))
-        last_stop = base_stop
-        print('last_stop', last_stop)
+        next_stop = random.choice(local_stops)
+        current_stop = 0 # base stop, always 0, by definition of file format
+        print('current_stop', current_stop)
         print('next_stop', next_stop)
         print('local stops', local_stops)
         capacity = router.get_capacity() 
-        local_path_list = []
+        local_path_list = set()
         while True:
             if next_stop == None:
                 break
+
+            # generate list of students connected with one or many stops
+            student_has_single = set()
+            student_has_many = set()
+            for student in stop_near_students[next_stop]:
+                temp = [x for x in student_near_stops[student] if x in global_stops]
+                print('gen list dinglem nay')
+                print(temp, student)
+                if len(temp) == 1:
+                    student_has_single.add(student)
+                elif len(temp) > 1:
+                    student_has_many.add(student)
+                else:
+                    raise Exception('Student has no stops!')
+            print()
+            print('student_has_many')
+            print(student_has_many)
+            print('student_has_single')
+            print(student_has_single)
+
             if capacity < 4:#studenci z tym samym stopem
-                del local_stops[next_stop]
+                local_stops.remove(next_stop)
                 next_stop = None#closest stop from available
             else:
-                last_stop = next_stop
+                current_stop = next_stop
+                # wez pojedynczych
+                print('wez pojedynczych')
+                print(current_stop)
+                studenci = stop_near_students[current_stop]
+                print('studenci')
+                print(studenci)
                 break
                 #wez pojedyncze
                 #usun z kazdego pojedynczego
