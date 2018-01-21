@@ -134,7 +134,7 @@ if __name__ == '__main__':
         print('next_stop', next_stop)
         print('local stops', local_stops)
         capacity = router.get_capacity() 
-        local_path_list = set()
+        local_path_list = list()
         while True:
             print('if next_stop == None:')
             if next_stop == None:
@@ -171,56 +171,59 @@ if __name__ == '__main__':
 
                 print()
                 print('for s in student_single:')
+                print(global_students_dict)
                 for s in student_single:
                     # wez pojedynczych i przypisz do przystanku
                     global_students_dict[s] = current_stop
-                    print(global_students_dict)
                     # usun pojedynczych z listy dostepnych
-                    print()
-                    print('global_students przed')
-                    print(global_students)
                     global_students.remove(s)
-                    print('global_students po')
-                    print(global_students)
-                    print()
+                print(global_students_dict)
 
                 print()
                 print('for s in student_many:')
-                for s in student_many:
-                    # wez wielokrotnych i przypisz do przystanku
-                    if capacity > 0:
+                print(global_students_dict)
+                if capacity > 0:
+                    for s in student_many:
+                        # wez wielokrotnych i przypisz do przystanku
                         global_students_dict[s] = current_stop
-                        print(global_students_dict)
                         # usun pojedynczych z listy dostepnych
-                        print()
-                        print('global_students przed')
-                        print(global_students)
                         global_students.remove(s)
-                        print('global_students po')
-                        print(global_students)
-                        print()
-                break
-                #wez pojedyncze
-                #usun z kazdego pojedynczego
-                #if capacity > 0:
-                #    wez z wielu jesli są
-                #        dla kazdego wzietego ktory mial wiele polaczen
-                #            usun polaczenie tego przystanku z innymi przystankami
-                #usun przyst z listy lokalnej stopow
-                #del local_stops[next_stop]
-                #usun przyst z listy globalnej stopow
-                #del global_stops[next_stop]
-                #lokalna_lista_sciezek += ??? //dodaj ten stop do lokalnejlisty sciezek ktore powstaly
-                #if cap>0  && len(local_stops) != 0:
-                    #nastepny_przystanek = najblizszy przystanek od biezacego (lista posortowana od najblizszych do najdalszych), lista zawiera tylko przystanki ktore sa w bazie lokalnych)!! wiec trzeba chyba przeszukiwac
-                #    nastepny_przystanek = for p in ost_przystanek_nearest: if p in lokalne_przystanki: nastepny przystanek=p, break
-                #    if dist(ostatni, nastepny) > dist(nastepny,baza)
-                #        next_stop = None
-                #        global_path_list.extend([[local_path_list]])
-                #else
-                #    next_stop = None
-                #    global_path_list.extend([[local_path_list]])
-        break
+                print(global_students_dict)
+
+
+                print()
+                print('local_stops')
+                print(local_stops)
+                local_stops.remove(current_stop)
+                print('local_stops')
+                print(local_stops)
+
+                print()
+                print('global_stops')
+                print(global_stops)
+                global_stops.remove(current_stop)
+                print('global_stops')
+                print(global_stops)
+
+                print()
+                print('local_path_list')
+                print(local_path_list)
+                local_path_list.extend([current_stop])
+                print('local_path_list')
+                print(local_path_list)
+
+                if capacity > 0 and local_stops == []:
+                    print('if capacity > 0 and local_stops == []:')
+                    for s in stop_near_stops[next_stop]:
+                        if s[0] in local_stops:
+                            next_stop = s[0]
+                    if np.linalg.norm(current_stop-next_stop) > np.linalg.norm(next_stop-base_stop):
+                        next_stop = None
+                        global_path_list.extend(local_path_list)
+                else:
+                    print('else capacity > 0 and local_stops == []:')
+                    next_stop = None
+                    global_path_list.extend(local_path_list)
 
 
     '''
