@@ -103,11 +103,8 @@ if __name__ == '__main__':
 
 
     '''
-    w algorytmie wyznaczajacym rzystnaki odlegle od biezacego nie uwzgledniac tych ktore sa dalej od przyst.bazowego!
-    '''
-
-    '''
-    algorytm:
+    ## algorytm wyznaczajacy przystankiiii
+    #algorytm:
 
     globalne_przystanki = stops.copy()
     globalna_lista_sciezek = {}
@@ -120,33 +117,34 @@ if __name__ == '__main__':
         while True:
             //if lokalne_przystanki == empty
             if nastepny_przystanek == None
-                plot(ostatni_przystanek, baza)
+                #plot(ostatni_przystanek, baza)
                 break
 
             if capacity < studenci tylko z tym stopem:
                 usun ten przystanek z listy lokalnej stopów
                 nastepny_przystanek = najblizszy przystanek od biezacego (lista posortowana od najblizszych do najdalszych)
             else
-                plot(ostatni_przystanek, nastepny_przystanek)
+                #plot(ostatni_przystanek, nastepny_przystanek)
                 ostatni_przystanek = nastepny_przystanek
                 wez pojedynczych
                 usun z kazdego pojedynczego ten stop
                 if cap > 0
-                    wez z wielu
-                    usun z kazdego 'od wielu' ten stop
-                    jesli powstal pojedynczy
-                        wloz go do listy pojedynczych
-                usun stop z listy lokalnej stopow
+                    wez z wielu jesli są
+                        dla kazdego wzietego ktory mial wiele polaczen
+                            usun polaczenie tego przystanku z innymi przystankami
+                usun przyst z listy lokalnej stopow
+                usun przyst z listy globalnej stopow
                 lokalna_lista_sciezek += ??? //dodaj ten stop do lokalnejlisty sciezek ktore powstaly
-                usun ten stop z listy globalnej stopow w algorytmie
-                if cap>0 
-                    nastepny_przystanek = najblizszy przystanek od biezacego (lista posortowana od najblizszych do najdalszych), lista zawiera tylko przystanki ktore sa w bazie lokalnych)!! wiec trzeba chyba przeszukiwac
+                if cap>0  && lokalne_przystanki not empty
+                    //nastepny_przystanek = najblizszy przystanek od biezacego (lista posortowana od najblizszych do najdalszych), lista zawiera tylko przystanki ktore sa w bazie lokalnych)!! wiec trzeba chyba przeszukiwac
+                    nastepny_przystanek = for p in ost_przystanek_nearest: if p in lokalne_przystanki: nastepny przystanek=p, break
                     if dist(ostatni, nastepny) > dist(nastepny,baza)
                         nastepny = None
+                        globalna_lista_sciezek += lokalna sciezka
                 else
                     nastepny_przystanek = None
+                    globalna_lista_sciezek += lokalna sciezka
 
-                globalna_lista_sciezek += lokalna sciezka
 
     '''
 
