@@ -44,12 +44,18 @@ if __name__ == '__main__':
         plt.scatter(v[0], v[1], marker='.', s=150, color='xkcd:sky blue', edgecolor='xkcd:dark grey')
         plt.text(v[0]+0.1, v[1]+0.1, str(k), fontdict=dict(color='xkcd:blue'))
 
-    #plot students and stops assigned to them
+    '''
+    #plot students and stops assigned to them - old way, not using algorithm
     for k, v in student_near_stops.items():
         stud_x, stud_y = students[k]
         for i in v:
             stop_x, stop_y = stops[i]
             plt.plot([stud_x, stop_x], [stud_y, stop_y], 'k-', lw=0.5)
+
+    '''
+
+
+
     '''
     #calculate distance
     for k, v in list(stops.items())[1:]:
@@ -125,8 +131,8 @@ if __name__ == '__main__':
     for s in range(1, len(students)+1):
         global_students_dict[s] = None
 
-    while len(global_stops) != 0: ## empty
-        print('while len(global_stops) != 0: ## empty')
+    while len(global_students) != 0: ## empty, also some stops can be unassigned. but students must be picked up so thats why this condition
+        print('1111111 while len(global_stops) != 0: ## empty')
         local_stops = global_stops.copy()
         next_stop = random.choice(local_stops)
         current_stop = 0 # base stop, always 0, by definition of file format
@@ -136,8 +142,14 @@ if __name__ == '__main__':
         capacity = router.get_capacity() 
         local_path_list = list()
         while True:
-            print('if next_stop == None:')
-            if next_stop == None:
+            print(' 2222222222 if next_stop == None:')
+            print('local_path_list')
+            print(local_path_list)
+            print('global_students')
+            print(global_students)
+            print('next_stop')
+            print(next_stop)
+            if next_stop == None or len(global_students)==0:
                 print('break')
                 break
 
@@ -147,12 +159,13 @@ if __name__ == '__main__':
             print('for student in stop_near_students[next_stop]:')
             for student in stop_near_students[next_stop]:
                 temp = [x for x in student_near_stops[student] if x in global_stops]
-                if len(temp) == 1:
-                    student_single.add(student)
-                elif len(temp) > 1:
-                    student_many.add(student)
-                else:
-                    raise Exception('Student has no stops!')
+                if student in global_students:
+                    if len(temp) == 1:
+                        student_single.add(student)
+                    elif len(temp) > 1:
+                        student_many.add(student)
+                    else:
+                        raise Exception('Student has no stops!')
 
             if capacity < len(student_single):#studenci z tym samym stopem
                 print('if capacity < ')
@@ -168,6 +181,8 @@ if __name__ == '__main__':
             else:
                 print('else if capacity <:')
                 current_stop = next_stop
+                print('current_stop')
+                print(current_stop)
 
                 print()
                 print('for s in student_single:')
@@ -219,11 +234,11 @@ if __name__ == '__main__':
                             next_stop = s[0]
                     if np.linalg.norm(current_stop-next_stop) > np.linalg.norm(next_stop-base_stop):
                         next_stop = None
-                        global_path_list.extend(local_path_list)
+                        global_path_list.extend([local_path_list])
                 else:
                     print('else capacity > 0 and local_stops == []:')
                     next_stop = None
-                    global_path_list.extend(local_path_list)
+                    global_path_list.extend([local_path_list])
 
 
     '''
@@ -272,7 +287,23 @@ if __name__ == '__main__':
 
     '''
 
+    print()
+    print()
+    print()
+    print('global_students_dict')
+    print(global_students_dict)
+
+    for k, v in global_students_dict.items():
+
+        stud_x, stud_y = students[k]
+        stop_x, stop_y = stops[v]
+        plt.plot([stud_x, stop_x],[stud_y, stop_y],'k-', lw=0.5)
+        print(k,v)
+    print(students)
+    print(stops)
+
     plt.tight_layout()
+    #plt.savefig(str(random.randint(1,100))+'.jpg')
     plt.show()
 
 
