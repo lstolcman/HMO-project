@@ -192,7 +192,9 @@ if __name__ == '__main__':
                     global_students_dict[s] = current_stop
                     # usun pojedynczych z listy dostepnych
                     global_students.remove(s)
+                    capacity -= 1
                 print(global_students_dict)
+
 
                 print()
                 print('for s in student_many:')
@@ -203,6 +205,7 @@ if __name__ == '__main__':
                         global_students_dict[s] = current_stop
                         # usun pojedynczych z listy dostepnych
                         global_students.remove(s)
+                        capacity -= 1
                 print(global_students_dict)
 
 
@@ -227,11 +230,12 @@ if __name__ == '__main__':
                 print('local_path_list')
                 print(local_path_list)
 
-                if capacity > 0 and local_stops == []:
+                if capacity > 0 and local_stops != []:
                     print('if capacity > 0 and local_stops == []:')
                     for s in stop_near_stops[next_stop]:
                         if s[0] in local_stops:
                             next_stop = s[0]
+                            break
                     if np.linalg.norm(current_stop-next_stop) > np.linalg.norm(next_stop-base_stop):
                         next_stop = None
                         global_path_list.extend([local_path_list])
@@ -292,13 +296,44 @@ if __name__ == '__main__':
     print()
     print('global_students_dict')
     print(global_students_dict)
+    print('global_path_list')
+    print(global_path_list)
+
 
     for k, v in global_students_dict.items():
-
         stud_x, stud_y = students[k]
         stop_x, stop_y = stops[v]
         plt.plot([stud_x, stop_x],[stud_y, stop_y],'k-', lw=0.5)
         print(k,v)
+
+
+    print('global_path_list')
+    for path in global_path_list:
+        print()
+        print()
+        for i in range(len(path)+1):
+            print()
+            print('path')
+            print(path)
+            if i == 0:
+                print('1st')
+                print(path[0])
+                print(stops[0])
+                stop_x, stop_y = stops[path[0]]
+                plt.plot([stops[0][0], stop_x],[stops[0][1], stop_y],'r-', lw=0.5)
+            elif i == len(path):
+                print('last')
+                print(path[-1])
+                stop_x, stop_y = stops[path[i-1]]
+                plt.plot([stops[0][0], stop_x],[stops[0][1], stop_y],'r-', lw=0.5)
+            elif i < len(path):
+                print('last')
+                print(path[-1])
+                first_x, first_y = stops[path[i]]
+                second_x, second_y = stops[path[i-1]]
+                plt.plot([first_x, second_x],[first_y, second_y],'r-', lw=1.5)
+
+
     print(students)
     print(stops)
 
