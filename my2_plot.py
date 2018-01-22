@@ -2,10 +2,11 @@
 
 import router
 import time
-
+import matplotlib.pyplot as plt
+import numpy as np
 
 if __name__ == '__main__':
-    fn = 'instances/my1.txt'
+    fn = 'instances/my2.txt'
 
     print('Router init', end=' ')
     t0 = time.clock()
@@ -15,34 +16,10 @@ if __name__ == '__main__':
     maxwalk = router.get_maxwalk()
     capacity = router.get_capacity()
     print('{0:.5f}s'.format(time.clock()-t0))
-    print()
 
 
 
-    for x in range(100):
-        print(x, 'Local search', end=' ')
-        t0 = time.clock()
-        global_path_list, global_students_dict = router.route_local_search()
-        print('{0:.5f}s'.format(time.clock()-t0))
-        '''
-        with open(str(x)+'.txt', mode='wt', encoding='utf-8') as f:
-            for path in global_path_list:
-                f.write(' '.join(str(elem) for elem in path)+'\n')
-            f.write('\n')
-            for k, v in global_students_dict.items():
-                f.write('{0} {1}\n'.format(k, v))
-        '''
-
-
-
-
-
-
-
-
-    '''
-
-    #clear all
+     #clear all
     plt.cla()
     plt.clf()
     plt.title('{0}\nstops: {1}, students: {2}, maxwalk: {3}, capacity: {4}'.format(fn, len(stops), len(students), maxwalk, capacity))
@@ -64,6 +41,15 @@ if __name__ == '__main__':
     for k, v in students.items():
         plt.scatter(v[0], v[1], marker='.', s=150, color='xkcd:sky blue', edgecolor='xkcd:dark grey')
         plt.text(v[0]+0.1, v[1]+0.1, str(k), fontdict=dict(color='xkcd:blue'))
+
+
+
+    print('Local search', end=' ')
+    t0 = time.clock()
+    global_path_list, global_students_dict = router.route_local_search()
+    print('{0:.5f}s'.format(time.clock()-t0))
+
+
 
     for path in global_path_list:
         for i in range(len(path)+1):
@@ -89,5 +75,6 @@ if __name__ == '__main__':
     #plt.savefig(str(random.randint(1,100))+'.jpg')
     plt.show()
 
-    '''
+
+
 

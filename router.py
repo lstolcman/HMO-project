@@ -136,6 +136,8 @@ class Router():
 
                 if capacity < len(student_single):#studenci z tym samym stopem
                     if local_stops == []:
+                        #if len(global_students)>capacity and local_stops == []:
+                        #    return None
                         global_path_list.extend([local_path_list])
                         next_stop = None
                         break

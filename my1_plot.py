@@ -2,6 +2,8 @@
 
 import router
 import time
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 if __name__ == '__main__':
@@ -15,32 +17,12 @@ if __name__ == '__main__':
     maxwalk = router.get_maxwalk()
     capacity = router.get_capacity()
     print('{0:.5f}s'.format(time.clock()-t0))
-    print()
 
+    print('Local search', end=' ')
+    t0 = time.clock()
+    global_path_list, global_students_dict = router.route_local_search()
+    print('{0:.5f}s'.format(time.clock()-t0))
 
-
-    for x in range(100):
-        print(x, 'Local search', end=' ')
-        t0 = time.clock()
-        global_path_list, global_students_dict = router.route_local_search()
-        print('{0:.5f}s'.format(time.clock()-t0))
-        '''
-        with open(str(x)+'.txt', mode='wt', encoding='utf-8') as f:
-            for path in global_path_list:
-                f.write(' '.join(str(elem) for elem in path)+'\n')
-            f.write('\n')
-            for k, v in global_students_dict.items():
-                f.write('{0} {1}\n'.format(k, v))
-        '''
-
-
-
-
-
-
-
-
-    '''
 
     #clear all
     plt.cla()
@@ -89,5 +71,4 @@ if __name__ == '__main__':
     #plt.savefig(str(random.randint(1,100))+'.jpg')
     plt.show()
 
-    '''
 
