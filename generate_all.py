@@ -12,9 +12,11 @@ import sys
 fn - file name
 maxiter - maximum iteration number
 maxtries - maximum number of local search if no better result is found, then algorithm is stopped
+tm - how much time to compute result, in minutes
 '''
-def process(fn, maxiter, maxtries):
-    print('Router init for', fn, end=' ')
+def process(fn, maxiter, maxtries, tm=None):
+    print('Router init for', fn)
+    print('time constraint: {0}\nmax iterations={1}\nmax tries for better result={2}'.format(tm, maxiter, maxtries))
     t0 = time.clock()
     router = r.Router(fn)
     stops = router.get_stops()
@@ -28,13 +30,18 @@ def process(fn, maxiter, maxtries):
     min_path_list=None
     min_students_dict=None
     it=0
+    twhile = time.clock()
     while True:
+        if tm != None:
+            if (time.clock()-twhile) > tm*60:
+                print('time limit reached: {0}  ({1})'.format(time.clock()-twhile, tm))
+                break
         it+=1
         sys.stdout.write(str(it)+'\r')
         sys.stdout.flush()
         tries+=1
         #print('Local search', it, end=' ')
-        t0 = time.clock()
+        #t0 = time.clock()
         global_path_list, global_students_dict = None, None
         while global_path_list == None or global_students_dict == None:
             global_path_list, global_students_dict = router.route_local_search()
@@ -46,17 +53,29 @@ def process(fn, maxiter, maxtries):
             min_path_list=global_path_list
             min_students_dict=global_students_dict
             tries=0
-        if tries>maxtries:
+        if maxtries and tries>maxtries:
             print('tries {0}, it: {1}'.format(maxtries, it))
             break
 
-        if it>maxiter:
+        if maxiter and it>maxiter:
             break
+
+    if (tm == None):
+        outfname = 'res-un-'+(fn.split('/')[1]).split('.')[0]+'.txt'
+    else:
+        outfname = 'res-'+str(tm)+'m-'+(fn.split('/')[1]).split('.')[0]+'.txt'
+
+
+    with open('results/results.txt', mode='a', encoding='utf-8') as f:
+        f.write('{4} dist={3} iter={5} time_constraint={0} maxiter={1} maxtries={2}\n'.format(tm, maxiter, maxtries, dist, outfname, it))
+
 
     global_path_list=min_path_list
     global_students_dict=min_students_dict
 
-    with open('results/'+fn.split('/')[1], mode='wt', encoding='utf-8') as f:
+
+    print(outfname)
+    with open('results/'+outfname, mode='wt', encoding='utf-8') as f:
         for path in global_path_list:
             f.write(' '.join(str(elem) for elem in path)+'\n')
         f.write('\n')
@@ -66,12 +85,24 @@ def process(fn, maxiter, maxtries):
 
 if __name__ == '__main__':
 
+    try:
+        os.remove('results/results.txt')
+    except OSError:
+        pass
+
+    maxiter = 100
+    maxtries = 20
     if not os.path.exists('results'):
         os.makedirs('results')
     for fn in os.listdir("instances"):
         if fn.endswith(".txt"):
             print()
+            print()
             print('next file:', fn)
-            process('instances/'+fn, 100, 8)
+            process('instances/'+fn, maxiter, maxtries)
+            print()
+            process('instances/'+fn, maxiter=None, maxtries=None, tm=1)
+            print()
+            process('instances/'+fn, maxiter=None, maxtries=None, tm=5)
 
 
