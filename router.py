@@ -136,8 +136,8 @@ class Router():
 
                 if capacity < len(student_single):#studenci z tym samym stopem
                     if local_stops == []:
-                        #if len(global_students)>capacity and local_stops == []:
-                        #    return None
+                        if len(global_students)>capacity and local_stops == []:
+                            return [None,None] # not feasible solution - conflict: not enough capacity to assign students to stop
                         global_path_list.extend([local_path_list])
                         next_stop = None
                         break
@@ -192,6 +192,9 @@ class Router():
 
     def get_capacity(self):
         return self.capacity
+
+    def get_student_near_stops(self):
+        return self.student_near_stops
 
 
 

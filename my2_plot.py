@@ -15,6 +15,7 @@ if __name__ == '__main__':
     students = router.get_students()
     maxwalk = router.get_maxwalk()
     capacity = router.get_capacity()
+    student_near_stops = router.get_student_near_stops()
     print('{0:.5f}s'.format(time.clock()-t0))
 
 
@@ -47,10 +48,11 @@ if __name__ == '__main__':
     print('Local search', end=' ')
     t0 = time.clock()
     global_path_list, global_students_dict = router.route_local_search()
+    if global_path_list == None and global_students_dict == None:
+        print("nonnn")
     print('{0:.5f}s'.format(time.clock()-t0))
 
-
-
+    '''
     for path in global_path_list:
         for i in range(len(path)+1):
             if i == 0:
@@ -64,11 +66,23 @@ if __name__ == '__main__':
                 second_x, second_y = stops[path[i-1]]
                 plt.plot([first_x, second_x],[first_y, second_y],'r-', lw=1.5)
 
+    '''
 
     for k, v in global_students_dict.items():
         stud_x, stud_y = students[k]
         stop_x, stop_y = stops[v]
-        plt.plot([stud_x, stop_x],[stud_y, stop_y],'k-', lw=0.5)
+        plt.plot([stud_x, stop_x],[stud_y, stop_y],'b-', lw=1.0)
+
+
+    #plot students and stops assigned to them - old way, not using algorithm
+    for k, v in student_near_stops.items():
+        stud_x, stud_y = students[k]
+        for i in v:
+            stop_x, stop_y = stops[i]
+            plt.plot([stud_x, stop_x], [stud_y, stop_y], 'k:', lw=1.0)
+
+
+
 
 
     plt.tight_layout()
