@@ -1,0 +1,208 @@
+\documentclass [a4paper, 12pt]{article}
+
+\usepackage{geometry}
+\geometry{lmargin=2cm, rmargin=2cm, top=3cm, bottom=3cm}
+%\usepackage{showframe}
+
+\usepackage [utf8]{inputenc}
+
+\usepackage{graphicx}
+\usepackage{float}
+
+\author {Łukasz Stolcman}
+\title {School bus routing problem with bus stop selection}
+
+\usepackage [unicode]{hyperref}
+%\usepackage [unicode,hidelinks]{hyperref}
+
+\makeatletter
+\hypersetup {pdfauthor={\@author}}
+\hypersetup {pdftitle={\@title}}
+\makeatother
+
+\usepackage{titlesec}
+\titlelabel{\thetitle.\quad}
+
+\usepackage{indentfirst}
+
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+%interlinia 1.5: https://pl.wikibooks.org/wiki/LaTeX/Formatowanie#Interlinia
+\linespread{1.15}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+
+\usepackage{underscore}
+
+\begin {document}
+\maketitle
+
+\section{Problem definition}
+School bus routing problem, described in these instructions, is a variation of the vehicle routing problem. Unlike vehicle routing problem, where all the stops are known, and routes should be determined, in school bus routing problem only \textit{potential} stops are given, and selection of stops and determining bus routes depends on students' locations and capacity of each bus.
+\bigskip
+\\
+\textbf{The goal} of solving this problem is:
+\begin{enumerate}
+    \item to determine the set of stops to visit,
+    \item determine for each student which stop (s)he should walk to, and
+    \item determine routes that lie along the chosen stops, so that the total travelled distance is minimized.
+\end{enumerate}
+
+\section{Implementation of algorithm}
+To solve this problem, algorithm was designed. \textit{Python} was choosen as a language of conduction, along with Numpy and Matplotlib packages. Program is constructed in modular way, so it can be roughly re-used. The main routing code is inside \texttt{router.py} file.
+
+\subsection{Startup}
+The algorithm starts when input data is fed into it. To do it, it is needed to create a class and provide input file, e.g.:
+\begin{lstlisting}[language=Python]
+instance = router.Router('instances/sbr1.txt')
+\end{lstlisting}
+
+Class accepts provided input file format, and then process it, creating two dictionaries:
+\begin{itemize}
+    \item \textit{stops} -- pair of \texttt{stop_id} and its \texttt{coordinates}:
+        Returns dictionary:
+\begin{lstlisting}[basicstyle=\scriptsize,language=Python]
+dict( <stop_id> : [x, y],
+      <stop_id> : [x, y], ...
+      ...
+      )\end{lstlisting}
+    \item \textit{students} -- pair of \texttt{student_id} and its \texttt{coordinates}:
+        Returns dictionary:
+\begin{lstlisting}[basicstyle=\scriptsize,language=Python]
+dict( <stop_id> : [x, y],
+      <stop_id> : [x, y], ...
+      ...
+    )\end{lstlisting}
+\end{itemize}
+
+After this first steps, additional helper variables are created:
+\begin{itemize}
+    \item \textit{student_near_stops} -- set of feasible stops for this student (where walking distance is less than maximum walk distance).
+        Returns dictionary of pairs:
+       \begin{lstlisting}[basicstyle=\scriptsize,language=Python]
+dict( <student_id> : set( <stop_id>, <stop_id>, <stop_id>, ...)
+      <student_id> : set( <stop_id>, <stop_id>, <stop_id>, ...)
+       ...
+    )\end{lstlisting}
+
+    \item \textit{stop_near_stops} --  calculated distances between stop and other stops. \texttt{distance} is float value.
+        \begin{lstlisting}[basicstyle=\scriptsize,language=Python]
+dict( <stop_id> : tuple( tuple(<stop_id>, <distance>), tuple(<stop_id>, <distance>), ...)
+      <stop_id> : tuple( tuple(<stop_id>, <distance>), tuple(<stop_id>, <distance>), ...)
+    )\end{lstlisting}
+
+
+    \item \textit{stop_near_students} -- set of students feasible to pick up on this stop.
+        \begin{lstlisting}[basicstyle=\scriptsize,language=Python]
+dict( <stop_id> : set( <student_id>, <student_id>, <student_id>, ...)
+      <stop_id> : set( <student_id>, <student_id>, <student_id>, ...)
+    )\end{lstlisting}
+\end{itemize}
+
+\subsection{Routing algorithm}
+Main algorithm part consists of two loops, one inside another.
+It starts with creating additional variables such as global route list or students available to pick up.
+\subsubsection{Outer loop}
+Outer loop manage choice of next stop and deal with "local" stop list (that is, a list where one route will be written to). Loop breaks when all of the students were picked up (=list of students is empty). Also, it appends local route list to global route list.
+\subsubsection{Inner loop}
+Inner loop consists the most load-intensive procedures. It will consecutively:
+\begin{itemize}
+    \item check next stop and break the loop
+    \item check capacity of bus
+    \item take students available to particular stop, bearing in mind that they could be assigned only to this stop, so taking them first
+    \item adding current stop to local stop list
+    \item set new stop
+\end{itemize}
+
+Important question is how first and next stops are selected. This is where heurstic algorithm comes -- first stop is taken randomly (in "outer loop"). Then, the following stops are selected in greedy way -- in accordance to their distance (the closest stop to current is choosen), capacity (if current bus capacity could take students which are assigned only to suggested stop), and distance from base stop.
+
+In the end, algorithm returns two lists:
+\begin{itemize}
+    \item \textit{global_path_list} -- list of calculated routes.
+        \begin{lstlisting}[basicstyle=\scriptsize,language=Python]
+list([ [<stop_id>, <stop_id>, ..],
+       [<stop_id>, <stop_id>, ..],
+       ...
+     ])\end{lstlisting}
+    \item \textit{global_students_dict} -- dictionary of key-value pairs which describe which student is assigned to which stop.
+        \begin{lstlisting}[basicstyle=\scriptsize,language=Python]
+dict( <student_id> : <stop_id>,
+      <student_id> : <stop_id>,
+      ...
+    )\end{lstlisting}
+\end{itemize}
+
+\subsection{Simple-case example}
+Simple case example (\textit{my1.txt}) was created to debug designed algorithm.
+Overall operation of the routing algorithm is easily visible on the following images (\ref{fig:fig1}, \ref{fig:fig2}, \ref{fig:fig3}):
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../my1-stops}
+    \caption{Students and stops}
+    \label{fig:fig1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../my1-potential-stops}
+    \caption{Students and their potential stops}
+    \label{fig:fig2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../my1-route}
+    \caption{Assigned students (blue) and routes (red)}
+    \label{fig:fig3}
+\end{figure}
+
+\subsection{Generating routes for given instances}
+Another script (\texttt{generate_sbr_routes.py}) is written to conduct instance calculations.
+It loops through the \textit{instances} directory and takes every instance file to work on.
+
+Subsequently, it execute routing algorithm a certain number of times (depending on given contraints), saving the shorest path generated along with students assignment list.
+
+
+\section{Summary}
+Routing algorithm for problem \textit{capacitance vehicle routing problem} was written in Python language.
+Code of algorithm consists files \textit{router.py}, \textit{generate_all_sbr.py} and additional \textit{generate_my_images.py} for testing and debuggin purposes.
+It can be described as Multistart local search + greedy algorithm.
+
+
+For given set of data it returns feasible solutions which are saved in "results" directory.
+Addidtional "results.txt" file is provided to give overall knowledge about time constraints and calculated distance.
+
+Algorithm could be improved by caching and observing load-intensive parts to optimize them.
+Heuristics itself is very simple -- it could be improved by adding e.g. \textit{2-opt} or \textit{3-opt} operators.
+Additional elements might be added to cache unfeasible solutions, making the algorithm "tabu search".
+
+
+
+\end {document}
+

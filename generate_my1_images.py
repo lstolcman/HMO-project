@@ -99,8 +99,6 @@ if __name__ == '__main__':
         stop_x, stop_y = stops[v]
         plt.plot([stud_x, stop_x],[stud_y, stop_y],'b-', lw=1.0)
 
-    plt.savefig('my1-stops-assignment.jpg')
-
     for path in paths:
         for i in range(len(path)+1):
             if i == 0:
