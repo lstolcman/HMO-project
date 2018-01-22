@@ -213,8 +213,6 @@ class Router():
                     dist += np.linalg.norm(np.array(self.stops[0])-np.array(self.stops[path[i-1]]))
                 elif i < len(path):
                     dist += np.linalg.norm(np.array(self.stops[path[i]])-np.array(self.stops[path[i-1]]))
-        for k, v in self.global_students_dict.items():
-            dist += np.linalg.norm(np.array(self.stops[v])-np.array(self.students[k]))
         return dist
 
 
