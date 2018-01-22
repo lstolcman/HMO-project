@@ -27,6 +27,7 @@ if __name__ == '__main__':
             print('n')
             global_path_list, global_students_dict = router.route_local_search()
         print('{0:.5f}s'.format(time.clock()-t0))
+        print(global_path_list)
         '''
         with open(str(x)+'.txt', mode='wt', encoding='utf-8') as f:
             for path in global_path_list:

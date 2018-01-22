@@ -66,7 +66,9 @@ if __name__ == '__main__':
     for k, v in global_students_dict.items():
         stud_x, stud_y = students[k]
         stop_x, stop_y = stops[v]
-        plt.plot([stud_x, stop_x],[stud_y, stop_y],'k-', lw=0.5)
+        plt.plot([stud_x, stop_x],[stud_y, stop_y],'k-', lw=0.1)
+    t0=time.clock()
+    print('dist:',router.get_distance(), '  ', time.clock()-t0)
 
 
     plt.tight_layout()

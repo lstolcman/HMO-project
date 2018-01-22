@@ -12,6 +12,8 @@ class Router():
         self.capacity = None
         self.student_near_stops = None
         self.stop_near_stops = None
+        self.global_path_list = None
+        self.global_students_dict = None
 
         self.process_file(routes_fn)
         self.generate_student_near_stops()
@@ -138,8 +140,8 @@ class Router():
 
                 if capacity < len(student_single):#studenci z tym samym stopem
                     if local_stops == []:
-                        #if len(global_students)>capacity and local_stops == []:
-                        #    return [None,None] # not feasible solution - conflict: not enough capacity to assign students to stop
+                        if len(global_students)>capacity and local_stops == []:
+                            return [None,None] # not feasible solution - conflict: not enough capacity to assign students to stop
                         global_path_list.extend([local_path_list])
                         next_stop = None
                         break
@@ -147,6 +149,7 @@ class Router():
                     for s in self.stop_near_stops[next_stop]:
                         if s[0] in local_stops:
                             next_stop = s[0]
+                            break
                 else:
                     current_stop = next_stop
                     for s in student_single:
@@ -180,7 +183,9 @@ class Router():
                         next_stop = None
                         global_path_list.extend([local_path_list])
 
-        return [global_path_list, global_students_dict]
+        self.global_path_list = global_path_list
+        self.global_students_dict = global_students_dict
+        return [self.global_path_list, self.global_students_dict]
 
 
     def get_stops(self):
@@ -197,6 +202,21 @@ class Router():
 
     def get_student_near_stops(self):
         return self.student_near_stops
+
+    def get_distance(self):
+        dist = 0.0
+        for path in self.global_path_list:
+            for i in range(len(path)+1):
+                if i == 0:
+                    dist += np.linalg.norm(np.array(self.stops[0])-np.array(self.stops[path[0]]))
+                elif i == len(path):
+                    dist += np.linalg.norm(np.array(self.stops[0])-np.array(self.stops[path[i-1]]))
+                elif i < len(path):
+                    dist += np.linalg.norm(np.array(self.stops[path[i]])-np.array(self.stops[path[i-1]]))
+        for k, v in self.global_students_dict.items():
+            dist += np.linalg.norm(np.array(self.stops[v])-np.array(self.students[k]))
+        return dist
+
 
 
 
