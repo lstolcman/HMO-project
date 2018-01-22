@@ -24,7 +24,7 @@ def process(fn, maxiter, maxtries, tm=None):
     students = router.get_students()
     maxwalk = router.get_maxwalk()
     capacity = router.get_capacity()
-    print('{0:.5f}s'.format(time.clock()-t0))
+    print('Time: {0:.6f}s'.format(time.clock()-t0))
 
     minvalue=float('+Inf')
     tries=0
@@ -35,7 +35,7 @@ def process(fn, maxiter, maxtries, tm=None):
     while True:
         if tm != None:
             if (time.clock()-twhile) > tm*60:
-                print('time limit reached: {0}  ({1})'.format(time.clock()-twhile, tm))
+                print('time limit reached: {0}  ({1}m)'.format(time.clock()-twhile, tm))
                 break
         it+=1
         sys.stdout.write(str(it)+'\r')
@@ -60,6 +60,9 @@ def process(fn, maxiter, maxtries, tm=None):
 
         if maxiter and it>maxiter:
             break
+
+    if tm ==None:
+        print('time elapsed: {0:.2f}s'.format(time.clock()-twhile))
 
     if (tm == None):
         outfname = 'res-un-'+(fn.split('/')[1]).split('.')[0]+'.txt'
@@ -86,6 +89,9 @@ def process(fn, maxiter, maxtries, tm=None):
 
 if __name__ == '__main__':
 
+    print('================')
+    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
+    print('================')
     '''
     try:
         os.remove('results/results.txt')
@@ -112,5 +118,8 @@ if __name__ == '__main__':
             process('instances/'+fn, maxiter=None, maxtries=None, tm=1)
             print()
             process('instances/'+fn, maxiter=None, maxtries=None, tm=5)
+            print('----------------')
+            print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
+            print('----------------')
 
 

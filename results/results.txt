@@ -1,0 +1,33 @@
+
+
+2018-01-22 06:26
+2018-01-22 06:26 res-un-sbr1.txt dist=459.2161415053747 iter=20 time_constraint=None maxiter=100 maxtries=10
+2018-01-22 06:27 res-1m-sbr1.txt dist=516.5393887464159 iter=62 time_constraint=1 maxiter=None maxtries=None
+2018-01-22 06:32 res-5m-sbr1.txt dist=347.9464687937674 iter=304 time_constraint=5 maxiter=None maxtries=None
+2018-01-22 06:32 res-un-sbr10.txt dist=392.5724045643047 iter=17 time_constraint=None maxiter=100 maxtries=10
+2018-01-22 06:34 res-1m-sbr10.txt dist=416.0203615499113 iter=34 time_constraint=1 maxiter=None maxtries=None
+2018-01-22 06:39 res-5m-sbr10.txt dist=353.2831855983039 iter=177 time_constraint=5 maxiter=None maxtries=None
+2018-01-22 06:39 res-un-sbr2.txt dist=212.1873912613657 iter=21 time_constraint=None maxiter=100 maxtries=10
+2018-01-22 06:40 res-1m-sbr2.txt dist=194.87306458311636 iter=93 time_constraint=1 maxiter=None maxtries=None
+2018-01-22 06:45 res-5m-sbr2.txt dist=294.82955188502075 iter=475 time_constraint=5 maxiter=None maxtries=None
+2018-01-22 06:45 res-un-sbr3.txt dist=3294.9083461792266 iter=24 time_constraint=None maxiter=100 maxtries=10
+2018-01-22 06:46 res-1m-sbr3.txt dist=3435.8748365977463 iter=945 time_constraint=1 maxiter=None maxtries=None
+2018-01-22 06:51 res-5m-sbr3.txt dist=3277.139773372867 iter=4545 time_constraint=5 maxiter=None maxtries=None
+2018-01-22 06:51 res-un-sbr4.txt dist=2453.1130228881852 iter=13 time_constraint=None maxiter=100 maxtries=10
+2018-01-22 06:52 res-1m-sbr4.txt dist=2350.7345462941576 iter=5678 time_constraint=1 maxiter=None maxtries=None
+2018-01-22 06:57 res-5m-sbr4.txt dist=2634.7402767769 iter=23189 time_constraint=5 maxiter=None maxtries=None
+2018-01-22 06:57 res-un-sbr5.txt dist=2713.1383302898107 iter=33 time_constraint=None maxiter=100 maxtries=10
+2018-01-22 06:58 res-1m-sbr5.txt dist=2833.451632869025 iter=2607 time_constraint=1 maxiter=None maxtries=None
+2018-01-22 07:03 res-5m-sbr5.txt dist=2737.02882542922 iter=13038 time_constraint=5 maxiter=None maxtries=None
+2018-01-22 07:03 res-un-sbr6.txt dist=2841.6016847482756 iter=17 time_constraint=None maxiter=100 maxtries=10
+2018-01-22 07:04 res-1m-sbr6.txt dist=2236.2384693943773 iter=2982 time_constraint=1 maxiter=None maxtries=None
+2018-01-22 07:09 res-5m-sbr6.txt dist=2402.7725555131174 iter=14969 time_constraint=5 maxiter=None maxtries=None
+2018-01-22 07:09 res-un-sbr7.txt dist=2612.908273958092 iter=16 time_constraint=None maxiter=100 maxtries=10
+2018-01-22 07:10 res-1m-sbr7.txt dist=2254.0996311711324 iter=300 time_constraint=1 maxiter=None maxtries=None
+2018-01-22 07:15 res-5m-sbr7.txt dist=2271.0174258302072 iter=1506 time_constraint=5 maxiter=None maxtries=None
+2018-01-22 07:15 res-un-sbr8.txt dist=1921.2251834660601 iter=22 time_constraint=None maxiter=100 maxtries=10
+2018-01-22 07:16 res-1m-sbr8.txt dist=1936.4699992903122 iter=313 time_constraint=1 maxiter=None maxtries=None
+2018-01-22 07:21 res-5m-sbr8.txt dist=1279.9647371259402 iter=1558 time_constraint=5 maxiter=None maxtries=None
+2018-01-22 07:22 res-un-sbr9.txt dist=613.0421584558661 iter=14 time_constraint=None maxiter=100 maxtries=10
+2018-01-22 07:23 res-1m-sbr9.txt dist=473.3099131591227 iter=27 time_constraint=1 maxiter=None maxtries=None
+2018-01-22 07:28 res-5m-sbr9.txt dist=565.3404463691239 iter=137 time_constraint=5 maxiter=None maxtries=None
