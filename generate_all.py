@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import sys
+import datetime
 
 
 '''
@@ -67,7 +68,7 @@ def process(fn, maxiter, maxtries, tm=None):
 
 
     with open('results/results.txt', mode='a', encoding='utf-8') as f:
-        f.write('{4} dist={3} iter={5} time_constraint={0} maxiter={1} maxtries={2}\n'.format(tm, maxiter, maxtries, dist, outfname, it))
+        f.write('{6} {4} dist={3} iter={5} time_constraint={0} maxiter={1} maxtries={2}\n'.format(tm, maxiter, maxtries, dist, outfname, it, datetime.datetime.now().strftime("%Y-%m-%d %H:%M")))
 
 
     global_path_list=min_path_list
@@ -85,13 +86,20 @@ def process(fn, maxiter, maxtries, tm=None):
 
 if __name__ == '__main__':
 
+    '''
     try:
         os.remove('results/results.txt')
     except OSError:
         pass
+    '''
+    with open('results/results.txt', mode='a', encoding='utf-8') as f:
+        f.write('\n')
+        f.write('\n')
+        f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
+        f.write('\n')
 
     maxiter = 100
-    maxtries = 20
+    maxtries = 10
     if not os.path.exists('results'):
         os.makedirs('results')
     for fn in os.listdir("instances"):
