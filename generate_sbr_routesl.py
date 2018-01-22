@@ -109,7 +109,7 @@ if __name__ == '__main__':
     if not os.path.exists('results'):
         os.makedirs('results')
     for fn in os.listdir("instances"):
-        if fn.endswith(".txt"):
+        if fn.startswith('sbr') and fn.endswith('.txt'):
             print()
             print()
             print('next file:', fn)

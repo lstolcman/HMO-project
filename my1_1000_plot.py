@@ -21,9 +21,9 @@ if __name__ == '__main__':
 
 
     minvalue=float('+Inf')
-    maxiter=1000
+    maxiter=10000
     tries=0
-    maxtries=200
+    maxtries=1000
     min_path_list=None
     min_students_dict=None
     it=0

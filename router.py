@@ -151,7 +151,6 @@ class Router():
                     for s in self.stop_near_stops[next_stop]:
                         if s[0] in local_stops:
                             next_stop = s[0]
-                            print(next_stop)
                             break
                 else:
                     current_stop = next_stop
