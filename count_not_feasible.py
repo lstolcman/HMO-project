@@ -5,7 +5,7 @@ import time
 
 
 if __name__ == '__main__':
-    fn = 'instances/my2.txt'
+    fn = 'instances/sbr3.txt'
 
     print('Router init', end=' ')
     t0 = time.clock()
@@ -21,8 +21,9 @@ if __name__ == '__main__':
 
     nf=0
     print('loop')
-    it=100000
-    for x in range(it):
+    it=1000
+    for i in range(it):
+        print('{0}/{1} ({2}%)'.format(i, it, 100*(i/it)))
         t0 = time.clock()
         global_path_list, global_students_dict = router.route_local_search()
         if global_path_list == None and global_students_dict == None:

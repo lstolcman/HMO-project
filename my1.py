@@ -22,7 +22,10 @@ if __name__ == '__main__':
     for x in range(100):
         print(x, 'Local search', end=' ')
         t0 = time.clock()
-        global_path_list, global_students_dict = router.route_local_search()
+        global_path_list, global_students_dict = None, None
+        while global_path_list == None or global_students_dict == None:
+            print('n')
+            global_path_list, global_students_dict = router.route_local_search()
         print('{0:.5f}s'.format(time.clock()-t0))
         '''
         with open(str(x)+'.txt', mode='wt', encoding='utf-8') as f:

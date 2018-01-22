@@ -120,6 +120,8 @@ class Router():
             while True:
                 if next_stop == None or len(global_students)==0:
                     break
+                #if len(global_students)>capacity and local_stops == []:
+                #    return [None,None] # not feasible solution - conflict: not enough capacity to assign students to stop
 
                 # get our stop and generate list of students connected with only our stop or many stops
                 student_single = set()
@@ -136,8 +138,8 @@ class Router():
 
                 if capacity < len(student_single):#studenci z tym samym stopem
                     if local_stops == []:
-                        if len(global_students)>capacity and local_stops == []:
-                            return [None,None] # not feasible solution - conflict: not enough capacity to assign students to stop
+                        #if len(global_students)>capacity and local_stops == []:
+                        #    return [None,None] # not feasible solution - conflict: not enough capacity to assign students to stop
                         global_path_list.extend([local_path_list])
                         next_stop = None
                         break

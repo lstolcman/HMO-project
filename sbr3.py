@@ -2,12 +2,10 @@
 
 import router
 import time
-import matplotlib.pyplot as plt
-import numpy as np
 
 
 if __name__ == '__main__':
-    fn = 'instances/my1.txt'
+    fn = 'instances/sbr3.txt'
 
     print('Router init', end=' ')
     t0 = time.clock()
@@ -17,14 +15,35 @@ if __name__ == '__main__':
     maxwalk = router.get_maxwalk()
     capacity = router.get_capacity()
     print('{0:.5f}s'.format(time.clock()-t0))
+    print()
 
-    print('Local search', end=' ')
-    t0 = time.clock()
-    global_path_list, global_students_dict = None, None
-    while global_path_list == None or global_students_dict == None:
+
+
+    nf=0
+    it=1000
+    for x in range(it):
+        t0 = time.clock()
         global_path_list, global_students_dict = router.route_local_search()
-    print('{0:.5f}s'.format(time.clock()-t0))
+        if (global_path_list == None or global_students_dict == None):
+            nf+=1
+        '''
+        with open(str(x)+'.txt', mode='wt', encoding='utf-8') as f:
+            for path in global_path_list:
+                f.write(' '.join(str(elem) for elem in path)+'\n')
+            f.write('\n')
+            for k, v in global_students_dict.items():
+                f.write('{0} {1}\n'.format(k, v))
+        '''
+    print('{0}/{1}  ({2}%)'.format(nf,it, 100*(nf/it)))
 
+
+
+
+
+
+
+
+    '''
 
     #clear all
     plt.cla()
@@ -72,4 +91,6 @@ if __name__ == '__main__':
     plt.tight_layout()
     #plt.savefig(str(random.randint(1,100))+'.jpg')
     plt.show()
+
+    '''
 
