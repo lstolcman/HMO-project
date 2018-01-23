@@ -135,8 +135,13 @@ Another script (**generate_sbr_routes.py**) is written to conduct instance calcu
 
 Subsequently, it execute routing algorithm a certain number of times (depending on given contraints), saving the shorest path generated along with students assignment list.
 
+### Testing
+
+Obtained results (*results* directroy) can be tested by *SBRchecker.jar*
+
+
 ## Summary
-Routing algorithm for problem **capacitance vehicle routing problem** was written in Python language. Code of algorithm consists files router.py, generate all sbr.py and additional *generate_my_images.py* for testing and debuggin purposes. It can be described as *Multistart local search + greedy* algorithm.
+Routing algorithm for problem **capacitance vehicle routing problem** was written in Python language. Code of algorithm consists files *router.py*, *generate_all_sbr.py* and additional *generate_my_images.py* for testing and debuggin purposes. It can be described as *Multistart local search + greedy* algorithm.
 
 
 For given set of data it returns feasible solutions which are saved in "results" directory. Addidtional "results.txt" file is provided to give overall knowledge about time constraints and calculated distance.

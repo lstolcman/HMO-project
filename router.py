@@ -140,7 +140,7 @@ class Router():
                         else:
                             raise Exception('Student has no stops!')
 
-                if capacity < len(student_single):#studenci z tym samym stopem
+                if capacity < len(student_single):#students with the same stop
                     if local_stops == []:
                         if len(global_students)>capacity and local_stops == []:
                             return [None,None] # not feasible solution - conflict: not enough capacity to assign students to stop
@@ -155,17 +155,17 @@ class Router():
                 else:
                     current_stop = next_stop
                     for s in student_single:
-                        # wez pojedynczych i przypisz do przystanku
+                        # take single and assign to stop
                         global_students_dict[s] = current_stop
-                        # usun pojedynczych z listy dostepnych
+                        # delete single from available list
                         global_students.remove(s)
                         capacity -= 1
 
                     for s in student_many:
                         if capacity > 0:
-                            # wez wielokrotnych i przypisz do przystanku
+                            # take multiple  and assign to stop
                             global_students_dict[s] = current_stop
-                            # usun pojedynczych z listy dostepnych
+                            # delete from available list
                             global_students.remove(s)
                             capacity -= 1
 
